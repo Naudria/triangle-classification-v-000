@@ -1,28 +1,34 @@
 class Triangle
   attr_accessor :side1, :side2, :side3
 
-  class Triangle
-attr_accessor :a, :b, :c
-  def initialize(a, b, c)
-    @a = a
-    @b = b
-    @c = c
-end
+  def initialize(side1, side2, side3)
+    @side1 = side1
+    @side2 = side2
+    @side3 = side3
+  end
 
-  def kind
-    if (a + b <= c || a + c <= b || b + c <= a) || (a <=0 || b <=0 || c <=0)
-      raise TriangleError # checks for invalid triangles upon initialization
-    elsif a == b && b == c
-      return :equilateral
-    elsif a == b || a == c || b == c
-      return :isosceles
-    elsif a != b || a != c || b != c
-      return :scalene
+  def trianglehavesides
+    	raise TriangleError if side1 == 0 && side2 == 0 && side3 == 0
+    end
+
+    def validateTriangle
+    	trianglehavesides
+    	real_triangle = [(side1 + side2 > side3), (side1 + side3 > side2), (side2 + side3 > side1)]
+      [side1, side2, side3].each { |s| real_triangle << false if s <= 0 }
+      raise TriangleError if real_triangle.include?(false)
+    end
+
+    def kind
+    	validateTriangle
+    	if side1 == side2 && side2 == side3
+        :equilateral
+      elsif side1 == side2 || side2 == side3 || side1 == side3
+        :isosceles
+      else
+        :scalene
+      end
     end
   end
 
-end
-
-
-class TriangleError < StandardError
-end
+    class TriangleError < StandardError
+    	end
